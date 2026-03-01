@@ -1,4 +1,5 @@
 // All requires
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const Expense = require('./models/Expense');
@@ -11,7 +12,7 @@ app.use(express.json());
 app.use(cors())
 
 // Database connection
-mongoose.connect('mongodb+srv://evans2006:i7KKVdHwLCalz8AE@finance-tracker.ecscqjq.mongodb.net/financeDB?appName=finance-tracker')
+mongoose.connect(process.env.MONGO_URI)
         .then(() => console.log('It is a success for you'))
         .catch((error) => console.log("Somethig seems off with the connection", error))
 
@@ -25,7 +26,6 @@ app.get('/expenses', (req, res) => {
 })
 
 app.post('/expenses', (req, res) => {
-    console.log(req.body);
     const expense = new Expense(req.body); // we create the variable that will carry the new data to be added
     expense.save()
             .then(expense => res.json(expense))
